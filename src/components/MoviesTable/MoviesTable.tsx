@@ -7,7 +7,7 @@ import { Error } from 'components/shared/Error';
 import { Loading } from 'components/shared/Loading';
 import { Pagination } from './components/Pagination';
 import { Search } from './components/Search';
-import { Table } from './components/Table';
+import { Movies } from './components/Movies';
 
 // Redux
 import { selectors, actions, ROWS_PER_PAGE } from './slice';
@@ -58,7 +58,7 @@ export const MoviesTable = () => {
         {isLoading ? <Loading /> : null}
         {!isLoading && !error ? (
           <>
-            <Table movies={movies} />
+            <Movies movies={movies} />
             <Pagination
               totalCount={totalCount}
               totalNumberOfPages={calculateTotalNumberOfPages(
