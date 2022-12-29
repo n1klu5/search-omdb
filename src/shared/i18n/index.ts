@@ -1,8 +1,8 @@
-import type { ResourceKey } from 'i18next'
-import i18next from 'i18next'
-import { initReactI18next } from 'react-i18next'
+import type { ResourceKey } from 'i18next';
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
-import main from './main.json'
+import main from './main.json';
 
 export enum NamespaceNames {
   MAIN = 'main',
@@ -10,7 +10,7 @@ export enum NamespaceNames {
 
 const enResources: Record<NamespaceNames, ResourceKey> = {
   [NamespaceNames.MAIN]: main,
-}
+};
 
 i18next.use(initReactI18next).init({
   lng: 'en',
@@ -18,6 +18,6 @@ i18next.use(initReactI18next).init({
   resources: {
     en: enResources,
   },
-})
+});
 
-export { i18next as I18NEXT_INSTANCE }
+export { i18next as I18NEXT_INSTANCE };
