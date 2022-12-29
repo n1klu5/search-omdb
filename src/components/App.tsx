@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router';
 import { NoRouteMatch } from './shared/NoRouteMatch';
 import { Loading } from './shared/Loading';
 
+const MovieDetails = lazy(() => import('./MovieDetails'));
 const MoviesTable = lazy(() => import('./MoviesTable'));
 
 export const App = () => {
@@ -18,6 +19,14 @@ export const App = () => {
             element={
               <Suspense fallback={<Loading />}>
                 <MoviesTable />
+              </Suspense>
+            }
+          />
+          <Route
+            path="movie/:id"
+            element={
+              <Suspense fallback={<Loading />}>
+                <MovieDetails />
               </Suspense>
             }
           />
