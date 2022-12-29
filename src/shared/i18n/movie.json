@@ -1,0 +1,8 @@
+{
+  "title": "Title: {{title}}",
+  "year": "Year: {{year}}",
+  "type": "Type: {{type}}",
+  "actors": "Actors: {{actors}}",
+  "ratings": "Ratings: {{ratings}}",
+  "plot": "Plot: {{plot}}"
+}

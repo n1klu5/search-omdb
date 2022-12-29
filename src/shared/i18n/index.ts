@@ -3,15 +3,18 @@ import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import main from './main.json';
+import movie from './movie.json';
 import movies from './movies.json';
 
 export enum NamespaceNames {
   MAIN = 'main',
+  MOVIE = 'movie',
   MOVIES = 'movies',
 }
 
 const enResources: Record<NamespaceNames, ResourceKey> = {
   [NamespaceNames.MAIN]: main,
+  [NamespaceNames.MOVIE]: movie,
   [NamespaceNames.MOVIES]: movies,
 };
 
