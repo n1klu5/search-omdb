@@ -1,6 +1,8 @@
 import { clsx } from 'clsx';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
+import { ResolutionContext } from 'shared/resolutionContext';
 import { BUTTON_STYLE } from 'shared/styles';
 import { Error } from '../shared/Error';
 import { Loading } from '../shared/Loading';
@@ -11,6 +13,7 @@ export const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { isLoading, movie, error } = useMovie(id!);
   const { t } = useTranslation();
+  const useSmallResolution = useContext(ResolutionContext);
 
   if (!id) {
     navigate('/');
@@ -32,8 +35,16 @@ export const MovieDetails = () => {
       {isLoading && <Loading />}
       {error && <Error errorMessage={error} />}
       {!isLoading && !error && movie && (
-        <div className="flex justify-between p-4">
-          <ul>
+        <div
+          className={clsx('flex justify-between p-4', {
+            'flex-col': useSmallResolution.useSmallSizes,
+          })}
+        >
+          <ul
+            className={clsx({
+              'mb-4': useSmallResolution.useSmallSizes,
+            })}
+          >
             <li>{t('movie:title', { title: movie.title })}</li>
             <li>{t('movie:year', { year: movie.year })}</li>
             <li>{t('movie:type', { type: movie.type })}</li>
