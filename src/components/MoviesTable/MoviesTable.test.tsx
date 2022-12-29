@@ -1,15 +1,15 @@
 import {
-  render,
   screen,
+  render,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { FullWrapper } from 'testUtils/wrapperComponents';
+import userEvent from '@testing-library/user-event';
+import MoviesTable from './index';
 
-import { App } from './App';
-
-jest.mock('../api/movies', () => {
+jest.mock('../../api/movies', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const MovieBuilder = require('../testUtils/dataBuilders/movieBuilder');
+  const MovieBuilder = require('../../testUtils/dataBuilders/movieBuilder');
   return {
     loadMovies: () =>
       new Promise((resolve) =>
@@ -26,33 +26,39 @@ jest.mock('../api/movies', () => {
   };
 });
 
-describe('<App />', () => {
+describe('<MoviesTable/>', () => {
   let fixtures: ReturnType<typeof getFixtures>;
 
   beforeEach(() => {
     fixtures = getFixtures();
   });
 
-  it('shows loader first, then renders the app', async () => {
+  it('can search by title', async () => {
     fixtures.givenComponentIsRendered();
+    await fixtures.whenUserEntersSearchTitle();
     await fixtures.thenLoaderIsVisible();
-    await fixtures.thenTitleIsVisible();
+    await fixtures.thenTableWithMoviesIsDisplayed();
   });
 });
 
 const getFixtures = () => {
   return {
-    givenComponentIsRendered: () => render(<App />, { wrapper: FullWrapper }),
+    givenComponentIsRendered: () =>
+      render(<MoviesTable />, { wrapper: FullWrapper }),
+    whenUserEntersSearchTitle: async () => {
+      const searchInput = await screen.findByRole('input', {
+        name: /Search By title/i,
+      });
+      await userEvent.type(searchInput, 'Batman');
+    },
     thenLoaderIsVisible: async () => {
       const loader = await screen.findByText('Loading, please wait ...');
       expect(loader).toBeVisible();
       await waitForElementToBeRemoved(loader);
     },
-    thenTitleIsVisible: async () => {
-      const title = await screen.findByRole('heading', {
-        name: /OMDB Searcher/i,
-      });
-      expect(title).toBeVisible();
+    thenTableWithMoviesIsDisplayed: async () => {
+      expect(await screen.findByRole('table')).toBeVisible();
+      expect(await screen.findByText('Batman')).toBeVisible();
     },
   };
 };

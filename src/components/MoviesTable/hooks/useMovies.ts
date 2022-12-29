@@ -1,13 +1,23 @@
 import { MoviesError, MoviesResponse } from 'api/contracts/movieResponse';
 import { loadMovies, QueryParams } from 'api/movies';
-import { Movie } from 'entities/movie';
+import { Movie } from '../../../entities/movie';
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
 export const useMovies = (queryParams: QueryParams) => {
   const { data, isLoading, error } = useQuery<MoviesResponse, MoviesError>(
-    ['movies', queryParams.pageNumber],
+    [
+      'movies',
+      queryParams.pageNumber,
+      queryParams.search?.title,
+      queryParams.search?.year,
+    ],
     () => loadMovies(queryParams),
+    {
+      enabled: !!queryParams.search?.title,
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
   );
 
   const movies = useMemo(() => {
@@ -15,9 +25,9 @@ export const useMovies = (queryParams: QueryParams) => {
   }, [data]);
 
   return {
-    movies,
-    totalCount: data?.totalResults,
+    movies: movies ?? [],
+    totalCount: data?.totalResults ?? 0,
     isLoading,
-    error,
+    error: error?.Error,
   };
 };

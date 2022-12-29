@@ -1,0 +1,22 @@
+{
+  "title": "OMDB Searcher",
+  "details": "OMDB Details",
+  "movies": "Movies",
+  "filters": "Filters",
+  "search-by-title": {
+    "label": "Search by title",
+    "placeholder": "Movie title"
+  },
+  "search-by-year": {
+    "label": "Search by year",
+    "placeholder": "Movie year of production (types in title first)"
+  },
+  "movie-title": "Title",
+  "type": "Type",
+  "year": "Year",
+  "no-results": "No results found",
+  "narrow-filters": "Please narrow down filters to find some movies",
+  "items-per-page": "Total number of pages: {{totalCount}}, Items per page: {{itemsPerPage}}",
+  "next": "Next",
+  "previous": "Previous"
+}
