@@ -1,4 +1,7 @@
 {
   "work-in-progress": "The page is under construction",
-  "loading": "Loading, please wait ..."
+  "loading": "Loading, please wait ...",
+  "nothing-to-see": "Nothing to see here, probably wrong url",
+  "go-home": "Go home",
+  "back": "Back"
 }
