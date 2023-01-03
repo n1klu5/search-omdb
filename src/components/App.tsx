@@ -1,27 +1,60 @@
-import Avatar from 'components/Avatar'
+// Libraries
+import { debounce } from 'lodash';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router';
 
-function App() {
+// Components
+import { NoRouteMatch } from './shared/NoRouteMatch';
+import { Loading } from './shared/Loading';
+
+// Utilities
+import { isSmallResolution, ResolutionContext } from 'shared/resolutionContext';
+
+const MovieDetails = lazy(() => import('./MovieDetails'));
+const MoviesTable = lazy(() => import('./MoviesTable'));
+
+export const App = () => {
+  const [usedResolution, setUsedResolution] = useState({
+    useSmallSizes: isSmallResolution(),
+  });
+
+  const windowResize = debounce(() => {
+    setUsedResolution({ useSmallSizes: isSmallResolution() });
+  }, 500);
+
+  useEffect(() => {
+    window.addEventListener('resize', windowResize);
+
+    return () => {
+      window.removeEventListener('resize', windowResize);
+    };
+  }, []);
+
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-screen-xl py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-base font-semibold uppercase tracking-wide text-blue-600">
-            Welcome to
-          </h2>
-          <p className="my-3 text-4xl font-bold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
-            reactjs-vite-tailwindcss-boilerplate
-          </p>
-          <p className="text-xl text-gray-400">Start building for free.</p>
-          <p className="mt-5">
-            <Avatar
-              size="large"
-              src="https://www.gravatar.com/avatar/4405735f6f3129e0286d9d43e7b460d0"
+    <ResolutionContext.Provider value={usedResolution}>
+      <div className="flex h-full w-full">
+        <Routes>
+          <Route path="/">
+            <Route
+              index
+              element={
+                <Suspense fallback={<Loading />}>
+                  <MoviesTable />
+                </Suspense>
+              }
             />
-          </p>
-        </div>
+            <Route
+              path="movie/:id"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <MovieDetails />
+                </Suspense>
+              }
+            />
+            <Route path="*" element={<NoRouteMatch />} />
+          </Route>
+        </Routes>
       </div>
-    </div>
-  )
-}
-
-export default App
+    </ResolutionContext.Provider>
+  );
+};
